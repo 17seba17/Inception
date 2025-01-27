@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
   <style>
-    /* Import Google font - Poppins */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
     * {
@@ -169,7 +168,6 @@
       background: #5d3dbf;
     }
 
-    /* Modal Styles */
     .modal {
       display: none;
       position: fixed;
@@ -244,7 +242,7 @@
     const modalContent = document.getElementById("modalCodeOutput");
     const closeModal = document.getElementById("closeModal");
 
-    let userMessage = null; // Variable to store user's message
+    let userMessage = null; 
     const inputInitHeight = chatInput.scrollHeight;
 
     // API configuration
@@ -252,19 +250,17 @@
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
     const createChatLi = (message, className) => {
-      // Create a chat <li> element with passed message and className
       const chatLi = document.createElement("li");
       chatLi.classList.add("chat", `${className}`);
       let chatContent = className === "outgoing" ? `<div></div>` : `<span class="material-symbols-outlined">smart_toy</span><div></div>`;
       chatLi.innerHTML = chatContent;
       chatLi.querySelector("div").textContent = message;
-      return chatLi; // return chat <li> element
+      return chatLi; 
     };
 
     const generateResponse = async (chatElement) => {
       const messageElement = chatElement.querySelector("div");
 
-      // Definizione delle opzioni per la richiesta API
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -278,7 +274,6 @@
         }),
       };
 
-      // Invio della richiesta API
       try {
         const response = await fetch(API_URL, requestOptions);
         const data = await response.json();
@@ -286,7 +281,6 @@
 
         let apiResponse = data.candidates[0].content.parts[0].text;
 
-        // Verifica la presenza di blocchi di codice racchiusi in
 
 
        
@@ -297,7 +291,7 @@
           messageElement.textContent = apiResponse;
           codeBlocks.forEach((block, index) => {
    
-             const  cleanCode = block.replace(/\u0060\u0060\u0060html|\u0060\u0060\u0060/g, '').trim();
+             const  cleanCode = block.replace(/\u0060\u0060\u0060html|\u0060\u0060\u0060/g, '');
             
             // Crea un pulsante per eseguire il codice
             const runButton = document.createElement('button');
@@ -308,53 +302,43 @@
         const codeFrame = document.getElementById("codeFrame");
   const doc = codeFrame.contentDocument || codeFrame.contentWindow.document;
 
-  // Resetta il contenuto dell'iframe
   doc.open();
-  doc.write(""); // Scrivi un contenuto vuoto per resettare l'iframe
+  doc.write("");
   doc.close();
 
-  // Scrivi il nuovo contenuto
   doc.open();
   doc.write(cleanCode);
   doc.close();
 
-  // Mostra il modal
   modal.style.display = "flex";
             };
 
-            // Aggiungi il pulsante al messaggio
             messageElement.appendChild(document.createElement('br'));
             messageElement.appendChild(runButton);
           });
         } else {
-      // Nessun codice trovato: visualizza semplicemente il testo
       messageElement.textContent = apiResponse.replace(/\*\*(.*?)\*\*/g, "$1");
     }
   } catch (error) {
-    // Gestione degli errori
     messageElement.classList.add("error");
     messageElement.textContent = error.message;
   } finally {
-    // Aggiorna lo scroll della chatbox
     chatbox.scrollTo(0, chatbox.scrollHeight);
   }
 };
 
 
     const handleChat = () => {
-      userMessage = chatInput.value.trim(); // Get user entered message and remove extra whitespace
+      userMessage = chatInput.value.trim(); 
       if (!userMessage) return;
 
-      // Clear the input textarea and set its height to default
       chatInput.value = "";
       chatInput.style.height = `${inputInitHeight}px`;
 
-      // Append the user's message to the chatbox
       chatbox.appendChild(createChatLi(userMessage, "outgoing"));
       chatbox.scrollTo(0, chatbox.scrollHeight);
 
       setTimeout(() => {
-        // Display "Thinking..." message while waiting for the response
         const incomingChatLi = createChatLi("Thinking...", "incoming");
         chatbox.appendChild(incomingChatLi);
         chatbox.scrollTo(0, chatbox.scrollHeight);
@@ -369,8 +353,7 @@
     });
 
     chatInput.addEventListener("keydown", (e) => {
-      // If Enter key is pressed without Shift key and the window
-      // width is greater than 800px, handle the chat
+     
       if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
         e.preventDefault();
         handleChat();
@@ -380,14 +363,12 @@
     sendChatBtn.addEventListener("click", handleChat);
 
 
-// Event listener per il pulsante di chiusura
 closeModal.addEventListener("click", () => {
    modal.style.display = "none"; // Nascondi il modal
   const codeFrame = document.getElementById("codeFrame");
   codeFrame.contentDocument.body.innerHTML = "";
 });
 
-// Assicurati che il selettore "#closeModal" sia presente
 if (!closeModal) {
   console.error("Il pulsante di chiusura non è stato trovato!");
 }
