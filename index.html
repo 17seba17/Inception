@@ -282,15 +282,18 @@
 
         let apiResponse = data.candidates[0].content.parts[0].text;
 
-        // Verifica la presenza di blocchi di codice racchiusi in ```
+        // Verifica la presenza di blocchi di codice racchiusi in
+
+        apiResponse = apiResponse.replace(/\/```/g, "/___");
+        apiResponse = apiResponse.replace(/```\/+/g, "___/");
         const codeBlocks = apiResponse.match(/```[\s\S]*?```/g);
 
         if (codeBlocks) {
           messageElement.textContent = apiResponse.replace(/```[\s\S]*?```/g, '').replace(/\*\*(.*?)\*\*/g, "$1");
           codeBlocks.forEach((block, index) => {
             // Pulisci il codice per ogni blocco
-            const cleanCode = block.replace(/```html|```/g, '').trim();
-
+            const  cleanCode = ((block.replace(/```html|```/g, '').trim()).replace(/\/___/g, "/```")).replace(/___\/+/g, "```/");
+            
             // Crea un pulsante per eseguire il codice
             const runButton = document.createElement('button');
             runButton.textContent = `Esegui codice ${index + 1}`;
