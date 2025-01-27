@@ -288,15 +288,18 @@
 
         // Verifica la presenza di blocchi di codice racchiusi in
 
-        apiResponse = apiResponse.replace(/\/```/g, "/___");
-        apiResponse = apiResponse.replace(/```\/+/g, "___/");
-        const codeBlocks = apiResponse.match(/```[\s\S]*?```/g);
 
+       
+        
+        apiResponse = apiResponse.replace(/\/```/g, "var1");
+        apiResponse = apiResponse.replace(/```\/+/g, "var2");
+        const codeBlocks = apiResponse.match(/\u0060\u0060\u0060[\s\S]*?\u0060\u0060\u0060/g);
+                          
         if (codeBlocks) {
-          messageElement.textContent = apiResponse;////replace(/```[\s\S]*?```/g, '').replace(/\*\*(.*?)\*\*/g, "$1");
+          messageElement.textContent = apiResponse;
           codeBlocks.forEach((block, index) => {
-            // Pulisci il codice per ogni blocco
-            const  cleanCode = ((block.replace(/```html|```/g, '').trim()).replace(/\/___/g, "/```")).replace(/___\/+/g, "```/");
+   
+            const  cleanCode = block.replace(/```html|```/g, '').trim();
             
             // Crea un pulsante per eseguire il codice
             const runButton = document.createElement('button');
