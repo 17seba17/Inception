@@ -290,16 +290,14 @@
 
 
        
-        
-        apiResponse = apiResponse.replace(/\/```/g, "var1");
-        apiResponse = apiResponse.replace(/```\/+/g, "var2");
+
         const codeBlocks = apiResponse.match(/\u0060\u0060\u0060[\s\S]*?\u0060\u0060\u0060/g);
                           
         if (codeBlocks) {
           messageElement.textContent = apiResponse;
           codeBlocks.forEach((block, index) => {
    
-            const  cleanCode = block.replace(/```html|```/g, '').trim();
+             const  cleanCode = block.replace(/\u0060\u0060\u0060html|\u0060\u0060\u0060/g, '').trim();
             
             // Crea un pulsante per eseguire il codice
             const runButton = document.createElement('button');
