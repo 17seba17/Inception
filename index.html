@@ -300,8 +300,13 @@
             runButton.className = 'run-code-btn';
 
             runButton.onclick = () => {
-              modalContent.innerHTML = cleanCode; // Inserisci il codice nel contenuto del modal
-              modal.style.display = "flex"; // Mostra il modal
+             const doc = codeFrame.contentDocument || codeFrame.contentWindow.document;
+    doc.open();
+    doc.write(cleanCode);
+    doc.close();
+
+    // Mostra il modal
+    modal.style.display = "flex";
             };
 
             // Aggiungi il pulsante al messaggio
@@ -358,13 +363,10 @@
         handleChat();
       }
     });
-
+ 
     sendChatBtn.addEventListener("click", handleChat);
 
-    closeModal.addEventListener("click", () => {
-      modal.style.display = "none"; // Nascondi il modal
-      modalContent.innerHTML = ""; // Pulisci il contenuto del modal
-    });
+
 // Event listener per il pulsante di chiusura
 closeModal.addEventListener("click", () => {
   modal.style.display = "none"; // Nascondi il modal
