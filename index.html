@@ -304,13 +304,21 @@
             runButton.className = 'run-code-btn';
 
             runButton.onclick = () => {
-             const doc = codeFrame.contentDocument || codeFrame.contentWindow.document;
-    doc.open();
-    doc.write(cleanCode);
-    doc.close();
+        const codeFrame = document.getElementById("codeFrame");
+  const doc = codeFrame.contentDocument || codeFrame.contentWindow.document;
 
-    // Mostra il modal
-    modal.style.display = "flex";
+  // Resetta il contenuto dell'iframe
+  doc.open();
+  doc.write(""); // Scrivi un contenuto vuoto per resettare l'iframe
+  doc.close();
+
+  // Scrivi il nuovo contenuto
+  doc.open();
+  doc.write(cleanCode);
+  doc.close();
+
+  // Mostra il modal
+  modal.style.display = "flex";
             };
 
             // Aggiungi il pulsante al messaggio
@@ -373,8 +381,9 @@
 
 // Event listener per il pulsante di chiusura
 closeModal.addEventListener("click", () => {
-  modal.style.display = "none"; // Nascondi il modal
-  modalContent.innerHTML = ""; // Pulisci il contenuto del modal
+   modal.style.display = "none"; // Nascondi il modal
+  const codeFrame = document.getElementById("codeFrame");
+  codeFrame.contentDocument.body.innerHTML = "";
 });
 
 // Assicurati che il selettore "#closeModal" sia presente
